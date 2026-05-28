@@ -1,20 +1,21 @@
-main: ${PACKAGE}.${NAME}
-name: ${NAME}
-version: "${VERSION}"
-api-version: "26.1.2"
-author: AUTHOR
-description: DESCRIPTION
+name: JJKPlugin
+version: 1.0.0
+main: me.username.jjkplugin.JJKPlugin
+api-version: '1.20'
+description: A hardcore item-driven Jujutsu Kaisen plugin with a pure command-driven combat interface.
+authors: Packet
+
 commands:
-  ex:
-    description: Base command for EXAMPLE
-    usage: "For a list of commands, type /ex help"
-    aliases: example
+  jjk:
+    description: The master execution command for all Cursed Techniques and Domain Expansions.
+    usage: /jjk <ability1|ability2|domain|shadowinv>
+    aliases: [cast, attack]
+  jjkadmin:
+    description: Admin utility commands to manage user jujutsu variables.
+    permission: jjk.admin
+    usage: /jjkadmin <setgrade|setce|givescroll> <player> [value]
+
 permissions:
-  example.test:
-    description: DESCRIPTION
-    default: true
-  example.*:
-    description: Grants all other permissions
-    default: false
-    children:
-      example.test: true
+  jjk.admin:
+    description: Allows administrative access to modify player grades, give out cursed scrolls, and adjust CE bars.
+    default: op
