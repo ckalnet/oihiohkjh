@@ -11,10 +11,12 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT'
+    // Target changed to 1.21.11
+    compileOnly 'io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT'
 }
 
-def targetJavaVersion = 17
+// Minecraft 1.20.5+ and 1.21+ require Java 21 to compile and run!
+def targetJavaVersion = 21
 java {
     def currentVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = currentVersion
