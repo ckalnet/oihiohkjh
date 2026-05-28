@@ -1,46 +1,34 @@
-plugins {
-    id 'java'
-}
+name: Build Minecraft Plugin
 
-group = 'me.username'
-version = '1.0.0'
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
 
-java {
-    // 1.21.11 natively demands Java 21 platform compilation
-    toolchain.languageVersion = JavaLanguageVersion.of(21)
-}
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-repositories {
-    mavenCentral()
-    // Official PaperMC Repository Network
-    maven {
-        name = "papermc"
-        url = uri("https://repo.papermc.io/repository/maven-public/")
-    }
-}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-dependencies {
-    // Native Paper 1.21.11 Compilation Dev-Bundle API
-    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
-}
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17' # Change to '21' if your plugin target requires Java 21
+        distribution: 'temurin'
+        cache: gradle
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-    
-    // Ensures Java 21 compatibility flags are explicitly passed to compiler
-    options.release.set(21)
-}
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
 
-processResources {
-    def props = [version: version]
-    inputs.properties props
-    filteringCharset 'UTF-8'
-    filesMatching('plugin.yml') {
-        expand props
-    }
-}
+    - name: Build with Gradle
+      run: ./gradlew build
 
-// Automatically formats the output file name to look clean when building
-jar {
-    archiveFileName = "${project.name}-${project.version}.jar"
-}
+    - name: Save the Compiled JAR
+      uses: actions/upload-artifact@v4
+      with:
+        name: MyPlugin-JAR
+        path: build/libs/*.jar
